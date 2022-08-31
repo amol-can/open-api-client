@@ -1,0 +1,1288 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- description: Generated server url
+  url: http://localhost:8181
+paths:
+  /api/admin/products/{id}:
+    delete:
+      operationId: deleteProduct
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+      tags:
+      - admin-product-resource
+      x-accepts: application/json
+    put:
+      operationId: updateProduct
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveProductRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: OK
+      tags:
+      - admin-product-resource
+      x-content-type: application/json
+      x-accepts: '*/*'
+  /api/admin/banks/{id}:
+    delete:
+      operationId: deleteBank
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+      tags:
+      - admin-bank-resource
+      x-accepts: application/json
+    get:
+      operationId: getById
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Bank'
+          description: OK
+      tags:
+      - admin-bank-resource
+      x-accepts: '*/*'
+    put:
+      operationId: updateBank
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveBankRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Bank'
+          description: OK
+      tags:
+      - admin-bank-resource
+      x-content-type: application/json
+      x-accepts: '*/*'
+  /api/admin/products:
+    post:
+      operationId: addProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveProductRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: OK
+      tags:
+      - admin-product-resource
+      x-content-type: application/json
+      x-accepts: '*/*'
+  /api/admin/banks:
+    get:
+      operationId: getAllBanks
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/SimpleBankView'
+                type: array
+          description: OK
+      tags:
+      - admin-bank-resource
+      x-accepts: '*/*'
+    post:
+      operationId: append
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveBankRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Bank'
+          description: OK
+      tags:
+      - admin-bank-resource
+      x-content-type: application/json
+      x-accepts: '*/*'
+  /api/products:
+    get:
+      operationId: getActiveProducts
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/Product'
+                type: array
+          description: OK
+      tags:
+      - public-product-resource
+      x-accepts: '*/*'
+  /api/products/{key}:
+    get:
+      operationId: getProductByKey_1_1
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: OK
+      tags:
+      - public-product-resource
+      x-accepts: '*/*'
+  /api/products/{id}:
+    get:
+      operationId: getProductById
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: OK
+      tags:
+      - public-product-resource
+      x-accepts: '*/*'
+  /api/admin/banks/{id}/products:
+    get:
+      operationId: getProductsByBank
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          maxLength: 24
+          minLength: 24
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/SimpleProductView'
+                type: array
+          description: OK
+      tags:
+      - admin-bank-resource
+      x-accepts: '*/*'
+components:
+  schemas:
+    AccountFees:
+      example:
+        custodyFeeForCredit: 1.2315135
+        graduatedMaintenance:
+        - fromMonthlyDeposit: 2.302136
+          toMonthlyDeposit: 7.0614014
+          fee: 9.301444
+        - fromMonthlyDeposit: 2.302136
+          toMonthlyDeposit: 7.0614014
+          fee: 9.301444
+        openingFees:
+          standingOrder: 4.145608
+          transferAccount: 2.027123
+          directDebit: 7.386282
+        permanentlyFree: true
+        fixedMaintenance: 5.637377
+        overdraftInterest: 3.6160767
+      properties:
+        fixedMaintenance:
+          format: float
+          type: number
+        graduatedMaintenance:
+          items:
+            $ref: '#/components/schemas/GraduatedMaintenanceFeeEntry'
+          type: array
+        permanentlyFree:
+          type: boolean
+        overdraftInterest:
+          format: float
+          type: number
+        openingFees:
+          $ref: '#/components/schemas/OpeningFees'
+        custodyFeeForCredit:
+          format: float
+          type: number
+      type: object
+    AtmWithdrawalFee:
+      example:
+        giroCard: 9.965781
+        debitCard: 9.36931
+        creditCard: 6.6835623
+      properties:
+        giroCard:
+          format: float
+          type: number
+        debitCard:
+          format: float
+          type: number
+        creditCard:
+          format: float
+          type: number
+      type: object
+    Bank:
+      example:
+        id: id
+      properties:
+        id:
+          maxLength: 24
+          minLength: 24
+          type: string
+      required:
+      - id
+      type: object
+    BankingAppGrades:
+      example:
+        googlePlay: 1.4658129805029452
+        appleAppStore: 6.027456183070403
+      properties:
+        appleAppStore:
+          format: double
+          type: number
+        googlePlay:
+          format: double
+          type: number
+      type: object
+    Bonus:
+      example:
+        amount: 6.4384236
+        chip:
+          desktopProductInfo: desktopProductInfo
+          mobileLabelLongText: mobileLabelLongText
+          desktopLabelText: desktopLabelText
+          mobileProductInfo: mobileProductInfo
+          mobileLabelShortText: mobileLabelShortText
+          enabled: true
+          desktopHoverText: desktopHoverText
+        text: text
+        enabled: true
+      properties:
+        enabled:
+          type: boolean
+        amount:
+          format: float
+          type: number
+        text:
+          type: string
+        chip:
+          $ref: '#/components/schemas/Chip'
+      type: object
+    CardsFees:
+      example:
+        giroPartnerCard: 1.4894159
+        giroCard: 1.0246457
+        debitPartnerCard: 7.4577446
+        debitCard: 6.846853
+        creditCard: 1.1730742
+        nonEuroPayments: 5.025005
+        creditPartnerCard: 4.9652185
+      properties:
+        giroCard:
+          format: float
+          type: number
+        giroPartnerCard:
+          format: float
+          type: number
+        debitCard:
+          format: float
+          type: number
+        debitPartnerCard:
+          format: float
+          type: number
+        creditCard:
+          format: float
+          type: number
+        creditPartnerCard:
+          format: float
+          type: number
+        nonEuroPayments:
+          format: float
+          type: number
+      type: object
+    CashFees:
+      example:
+        atmWithdrawalNonEuro:
+          giroCard: 9.965781
+          debitCard: 9.36931
+          creditCard: 6.6835623
+        branchOrShopWithdrawal: 8.762042
+        deposit: 9.018348
+        atmWithdrawalEuro:
+          giroCard: 9.965781
+          debitCard: 9.36931
+          creditCard: 6.6835623
+      properties:
+        atmWithdrawalEuro:
+          $ref: '#/components/schemas/AtmWithdrawalFee'
+        atmWithdrawalNonEuro:
+          $ref: '#/components/schemas/AtmWithdrawalFee'
+        branchOrShopWithdrawal:
+          format: float
+          type: number
+        deposit:
+          format: float
+          type: number
+      type: object
+    CashWithdrawalConditions:
+      example:
+        numberOfAtms: 5
+        withdrawalFrequency: LIMITED
+        atmNetworks:
+        - CASHPOOL
+        - CASHPOOL
+        enabled: true
+      properties:
+        enabled:
+          type: boolean
+        numberOfAtms:
+          format: int32
+          type: integer
+        atmNetworks:
+          items:
+            enum:
+            - CASHPOOL
+            - CASH_GROUP
+            - BANKCARD_SERVICENETZ
+            - ING
+            - VISA
+            - MASTERCARD
+            - SPARKASSE
+            type: string
+          type: array
+          uniqueItems: true
+        withdrawalFrequency:
+          enum:
+          - LIMITED
+          - UNLIMITED
+          type: string
+      type: object
+    CashWithdrawalInRegion:
+      example:
+        region: region
+        enabled: true
+      properties:
+        enabled:
+          type: boolean
+        region:
+          type: string
+      type: object
+    Cashback:
+      example:
+        amount: 3.5571952
+        chip:
+          desktopProductInfo: desktopProductInfo
+          mobileLabelLongText: mobileLabelLongText
+          desktopLabelText: desktopLabelText
+          mobileProductInfo: mobileProductInfo
+          mobileLabelShortText: mobileLabelShortText
+          enabled: true
+          desktopHoverText: desktopHoverText
+        text: text
+        enabled: true
+      properties:
+        enabled:
+          type: boolean
+        amount:
+          format: float
+          type: number
+        text:
+          type: string
+        chip:
+          $ref: '#/components/schemas/Chip'
+      type: object
+    Chip:
+      example:
+        desktopProductInfo: desktopProductInfo
+        mobileLabelLongText: mobileLabelLongText
+        desktopLabelText: desktopLabelText
+        mobileProductInfo: mobileProductInfo
+        mobileLabelShortText: mobileLabelShortText
+        enabled: true
+        desktopHoverText: desktopHoverText
+      properties:
+        enabled:
+          type: boolean
+        desktopLabelText:
+          type: string
+        desktopHoverText:
+          type: string
+        desktopProductInfo:
+          type: string
+        mobileLabelLongText:
+          type: string
+        mobileLabelShortText:
+          type: string
+        mobileProductInfo:
+          type: string
+      type: object
+    CreditCard:
+      example:
+        type: NO_CARD
+        conditions: conditions
+      properties:
+        type:
+          enum:
+          - NO_CARD
+          - VISA
+          - MASTERCARD
+          - AMEX
+          type: string
+        conditions:
+          type: string
+      type: object
+    DebitCard:
+      example:
+        type: NO_CARD
+        conditions: conditions
+      properties:
+        type:
+          enum:
+          - NO_CARD
+          - VISA_DEBIT
+          - MASTERCARD_DEBIT
+          type: string
+        conditions:
+          type: string
+      type: object
+    Doc:
+      example:
+        comment: comment
+        bankUrl: bankUrl
+        type: TERMS_AND_CONDITIONS
+        url: url
+      properties:
+        type:
+          enum:
+          - TERMS_AND_CONDITIONS
+          - INFORMATION_SHEET_FOR_DEPOSITORS
+          - DISTANTLY_SELLING_INFORMATION
+          - LIST_OF_PRICES_AND_SERVICES
+          - FEE_INFORMATION
+          type: string
+        url:
+          type: string
+        bankUrl:
+          type: string
+        comment:
+          type: string
+      required:
+      - type
+      type: object
+    Fees:
+      example:
+        cards:
+          giroPartnerCard: 1.4894159
+          giroCard: 1.0246457
+          debitPartnerCard: 7.4577446
+          debitCard: 6.846853
+          creditCard: 1.1730742
+          nonEuroPayments: 5.025005
+          creditPartnerCard: 4.9652185
+        cash:
+          atmWithdrawalNonEuro:
+            giroCard: 9.965781
+            debitCard: 9.36931
+            creditCard: 6.6835623
+          branchOrShopWithdrawal: 8.762042
+          deposit: 9.018348
+          atmWithdrawalEuro:
+            giroCard: 9.965781
+            debitCard: 9.36931
+            creditCard: 6.6835623
+        account:
+          custodyFeeForCredit: 1.2315135
+          graduatedMaintenance:
+          - fromMonthlyDeposit: 2.302136
+            toMonthlyDeposit: 7.0614014
+            fee: 9.301444
+          - fromMonthlyDeposit: 2.302136
+            toMonthlyDeposit: 7.0614014
+            fee: 9.301444
+          openingFees:
+            standingOrder: 4.145608
+            transferAccount: 2.027123
+            directDebit: 7.386282
+          permanentlyFree: true
+          fixedMaintenance: 5.637377
+          overdraftInterest: 3.6160767
+      properties:
+        account:
+          $ref: '#/components/schemas/AccountFees'
+        cards:
+          $ref: '#/components/schemas/CardsFees'
+        cash:
+          $ref: '#/components/schemas/CashFees'
+      type: object
+    GiroCard:
+      example:
+        type: NO_CARD
+        conditions: conditions
+      properties:
+        type:
+          enum:
+          - NO_CARD
+          - V_PAY
+          - MAESTRO
+          - GIROCARD
+          type: string
+        conditions:
+          type: string
+      type: object
+    GraduatedMaintenanceFeeEntry:
+      example:
+        fromMonthlyDeposit: 2.302136
+        toMonthlyDeposit: 7.0614014
+        fee: 9.301444
+      properties:
+        fromMonthlyDeposit:
+          format: float
+          type: number
+        toMonthlyDeposit:
+          format: float
+          type: number
+        fee:
+          format: float
+          type: number
+      type: object
+    OpeningFees:
+      example:
+        standingOrder: 4.145608
+        transferAccount: 2.027123
+        directDebit: 7.386282
+      properties:
+        transferAccount:
+          format: float
+          type: number
+        standingOrder:
+          format: float
+          type: number
+        directDebit:
+          format: float
+          type: number
+      type: object
+    SaveProductRequest:
+      example:
+        onlineBankingSafetyProcedures:
+        - I_TAN
+        - I_TAN
+        sustainabilityType: NO_ACTIVITIES
+        fees:
+          cards:
+            giroPartnerCard: 1.4894159
+            giroCard: 1.0246457
+            debitPartnerCard: 7.4577446
+            debitCard: 6.846853
+            creditCard: 1.1730742
+            nonEuroPayments: 5.025005
+            creditPartnerCard: 4.9652185
+          cash:
+            atmWithdrawalNonEuro:
+              giroCard: 9.965781
+              debitCard: 9.36931
+              creditCard: 6.6835623
+            branchOrShopWithdrawal: 8.762042
+            deposit: 9.018348
+            atmWithdrawalEuro:
+              giroCard: 9.965781
+              debitCard: 9.36931
+              creditCard: 6.6835623
+          account:
+            custodyFeeForCredit: 1.2315135
+            graduatedMaintenance:
+            - fromMonthlyDeposit: 2.302136
+              toMonthlyDeposit: 7.0614014
+              fee: 9.301444
+            - fromMonthlyDeposit: 2.302136
+              toMonthlyDeposit: 7.0614014
+              fee: 9.301444
+            openingFees:
+              standingOrder: 4.145608
+              transferAccount: 2.027123
+              directDebit: 7.386282
+            permanentlyFree: true
+            fixedMaintenance: 5.637377
+            overdraftInterest: 3.6160767
+        otherBankServices:
+        - SECURITIES_ACCOUNT
+        - SECURITIES_ACCOUNT
+        giroCard:
+          type: NO_CARD
+          conditions: conditions
+        bankingAppGrades:
+          googlePlay: 1.4658129805029452
+          appleAppStore: 6.027456183070403
+        bonus:
+          amount: 6.4384236
+          chip:
+            desktopProductInfo: desktopProductInfo
+            mobileLabelLongText: mobileLabelLongText
+            desktopLabelText: desktopLabelText
+            mobileProductInfo: mobileProductInfo
+            mobileLabelShortText: mobileLabelShortText
+            enabled: true
+            desktopHoverText: desktopHoverText
+          text: text
+          enabled: true
+        creditInterest: 20.549124
+        cashWithdrawalByCreditCardInRegion:
+          region: region
+          enabled: true
+        bank:
+          id: id
+        specialFeatures: specialFeatures
+        docs:
+        - comment: comment
+          bankUrl: bankUrl
+          type: TERMS_AND_CONDITIONS
+          url: url
+        - comment: comment
+          bankUrl: bankUrl
+          type: TERMS_AND_CONDITIONS
+          url: url
+        accountAccessWays:
+        - BRANCH
+        - BRANCH
+        freeCashWithdrawalAbroad: true
+        key: key
+        cashDepositCondition: FREE
+        giroCardCashWithdrawalConditions:
+          numberOfAtms: 5
+          withdrawalFrequency: LIMITED
+          atmNetworks:
+          - CASHPOOL
+          - CASHPOOL
+          enabled: true
+        cashWithdrawalByDebitCardInRegion:
+          region: region
+          enabled: true
+        cashback:
+          amount: 3.5571952
+          chip:
+            desktopProductInfo: desktopProductInfo
+            mobileLabelLongText: mobileLabelLongText
+            desktopLabelText: desktopLabelText
+            mobileProductInfo: mobileProductInfo
+            mobileLabelShortText: mobileLabelShortText
+            enabled: true
+            desktopHoverText: desktopHoverText
+          text: text
+          enabled: true
+        branchesNumber: 0
+        debitCardCashWithdrawalConditions:
+          numberOfAtms: 5
+          withdrawalFrequency: LIMITED
+          atmNetworks:
+          - CASHPOOL
+          - CASHPOOL
+          enabled: true
+        activeSince: 2000-01-23T04:56:07.000+00:00
+        depositGuarantee: depositGuarantee
+        personalConsultationsServiceAvailable: true
+        cashWithdrawalInShop: true
+        name: name
+        debitCard:
+          type: NO_CARD
+          conditions: conditions
+        creditCard:
+          type: NO_CARD
+          conditions: conditions
+        creditCardCashWithdrawalConditions:
+          numberOfAtms: 5
+          withdrawalFrequency: LIMITED
+          atmNetworks:
+          - CASHPOOL
+          - CASHPOOL
+          enabled: true
+        activeUntil: 2000-01-23T04:56:07.000+00:00
+        paymentApps:
+        - APPLE_PAY
+        - APPLE_PAY
+      properties:
+        key:
+          maxLength: 100
+          minLength: 3
+          type: string
+        name:
+          maxLength: 100
+          minLength: 3
+          type: string
+        activeSince:
+          format: date-time
+          type: string
+        activeUntil:
+          format: date-time
+          type: string
+        bank:
+          $ref: '#/components/schemas/Bank'
+        accountAccessWays:
+          items:
+            enum:
+            - BRANCH
+            - ONLINE
+            - PHONE
+            type: string
+          type: array
+          uniqueItems: true
+        branchesNumber:
+          format: int64
+          type: integer
+        bankingAppGrades:
+          $ref: '#/components/schemas/BankingAppGrades'
+        onlineBankingSafetyProcedures:
+          items:
+            enum:
+            - I_TAN
+            - MOBILE_TAN
+            - APP_TAN
+            - FIN_TS
+            - TAN_GENERATOR
+            - SMART_SECURE_APP
+            - CHIP_TAN
+            - PUSH_TAN
+            - PHOTO_TAN
+            - QR_TAN
+            - TAN_BOX
+            type: string
+          type: array
+          uniqueItems: true
+        personalConsultationsServiceAvailable:
+          type: boolean
+        specialFeatures:
+          type: string
+        giroCard:
+          $ref: '#/components/schemas/GiroCard'
+        debitCard:
+          $ref: '#/components/schemas/DebitCard'
+        creditCard:
+          $ref: '#/components/schemas/CreditCard'
+        paymentApps:
+          items:
+            enum:
+            - APPLE_PAY
+            - GOOGLE_PAY
+            type: string
+          type: array
+          uniqueItems: true
+        giroCardCashWithdrawalConditions:
+          $ref: '#/components/schemas/CashWithdrawalConditions'
+        debitCardCashWithdrawalConditions:
+          $ref: '#/components/schemas/CashWithdrawalConditions'
+        creditCardCashWithdrawalConditions:
+          $ref: '#/components/schemas/CashWithdrawalConditions'
+        freeCashWithdrawalAbroad:
+          type: boolean
+        cashWithdrawalByDebitCardInRegion:
+          $ref: '#/components/schemas/CashWithdrawalInRegion'
+        cashWithdrawalByCreditCardInRegion:
+          $ref: '#/components/schemas/CashWithdrawalInRegion'
+        cashWithdrawalInShop:
+          type: boolean
+        cashDepositCondition:
+          enum:
+          - FREE
+          - CONDITIONALLY_FREE
+          - CHARGEABLE
+          type: string
+        otherBankServices:
+          items:
+            enum:
+            - SECURITIES_ACCOUNT
+            - SAVINGS_PLANS
+            - CRYPTO
+            - FOREIGN_CURRENCIES
+            - ASSET_MANAGEMENT
+            type: string
+          type: array
+          uniqueItems: true
+        fees:
+          $ref: '#/components/schemas/Fees'
+        bonus:
+          $ref: '#/components/schemas/Bonus'
+        cashback:
+          $ref: '#/components/schemas/Cashback'
+        creditInterest:
+          format: float
+          maximum: 100
+          minimum: -100
+          type: number
+        depositGuarantee:
+          type: string
+        sustainabilityType:
+          enum:
+          - NO_ACTIVITIES
+          - CLIMATE_POSITIVE
+          - CLIMATE_NEUTRAL
+          - ENVIRONMENTAL_PROJECT
+          type: string
+        docs:
+          items:
+            $ref: '#/components/schemas/Doc'
+          type: array
+      required:
+      - activeSince
+      - activeUntil
+      - bank
+      - key
+      - name
+      type: object
+    Product:
+      example:
+        onlineBankingSafetyProcedures:
+        - I_TAN
+        - I_TAN
+        sustainabilityType: NO_ACTIVITIES
+        fees:
+          cards:
+            giroPartnerCard: 1.4894159
+            giroCard: 1.0246457
+            debitPartnerCard: 7.4577446
+            debitCard: 6.846853
+            creditCard: 1.1730742
+            nonEuroPayments: 5.025005
+            creditPartnerCard: 4.9652185
+          cash:
+            atmWithdrawalNonEuro:
+              giroCard: 9.965781
+              debitCard: 9.36931
+              creditCard: 6.6835623
+            branchOrShopWithdrawal: 8.762042
+            deposit: 9.018348
+            atmWithdrawalEuro:
+              giroCard: 9.965781
+              debitCard: 9.36931
+              creditCard: 6.6835623
+          account:
+            custodyFeeForCredit: 1.2315135
+            graduatedMaintenance:
+            - fromMonthlyDeposit: 2.302136
+              toMonthlyDeposit: 7.0614014
+              fee: 9.301444
+            - fromMonthlyDeposit: 2.302136
+              toMonthlyDeposit: 7.0614014
+              fee: 9.301444
+            openingFees:
+              standingOrder: 4.145608
+              transferAccount: 2.027123
+              directDebit: 7.386282
+            permanentlyFree: true
+            fixedMaintenance: 5.637377
+            overdraftInterest: 3.6160767
+        otherBankServices:
+        - SECURITIES_ACCOUNT
+        - SECURITIES_ACCOUNT
+        giroCard:
+          type: NO_CARD
+          conditions: conditions
+        bankingAppGrades:
+          googlePlay: 1.4658129805029452
+          appleAppStore: 6.027456183070403
+        bonus:
+          amount: 6.4384236
+          chip:
+            desktopProductInfo: desktopProductInfo
+            mobileLabelLongText: mobileLabelLongText
+            desktopLabelText: desktopLabelText
+            mobileProductInfo: mobileProductInfo
+            mobileLabelShortText: mobileLabelShortText
+            enabled: true
+            desktopHoverText: desktopHoverText
+          text: text
+          enabled: true
+        creditInterest: 6.965118
+        cashWithdrawalByCreditCardInRegion:
+          region: region
+          enabled: true
+        bank:
+          id: id
+        specialFeatures: specialFeatures
+        docs:
+        - comment: comment
+          bankUrl: bankUrl
+          type: TERMS_AND_CONDITIONS
+          url: url
+        - comment: comment
+          bankUrl: bankUrl
+          type: TERMS_AND_CONDITIONS
+          url: url
+        accountAccessWays:
+        - BRANCH
+        - BRANCH
+        id: id
+        freeCashWithdrawalAbroad: true
+        key: key
+        cashDepositCondition: FREE
+        giroCardCashWithdrawalConditions:
+          numberOfAtms: 5
+          withdrawalFrequency: LIMITED
+          atmNetworks:
+          - CASHPOOL
+          - CASHPOOL
+          enabled: true
+        cashWithdrawalByDebitCardInRegion:
+          region: region
+          enabled: true
+        cashback:
+          amount: 3.5571952
+          chip:
+            desktopProductInfo: desktopProductInfo
+            mobileLabelLongText: mobileLabelLongText
+            desktopLabelText: desktopLabelText
+            mobileProductInfo: mobileProductInfo
+            mobileLabelShortText: mobileLabelShortText
+            enabled: true
+            desktopHoverText: desktopHoverText
+          text: text
+          enabled: true
+        branchesNumber: 0
+        debitCardCashWithdrawalConditions:
+          numberOfAtms: 5
+          withdrawalFrequency: LIMITED
+          atmNetworks:
+          - CASHPOOL
+          - CASHPOOL
+          enabled: true
+        activeSince: 2000-01-23T04:56:07.000+00:00
+        depositGuarantee: depositGuarantee
+        personalConsultationsServiceAvailable: true
+        cashWithdrawalInShop: true
+        name: name
+        debitCard:
+          type: NO_CARD
+          conditions: conditions
+        creditCard:
+          type: NO_CARD
+          conditions: conditions
+        creditCardCashWithdrawalConditions:
+          numberOfAtms: 5
+          withdrawalFrequency: LIMITED
+          atmNetworks:
+          - CASHPOOL
+          - CASHPOOL
+          enabled: true
+        activeUntil: 2000-01-23T04:56:07.000+00:00
+        paymentApps:
+        - APPLE_PAY
+        - APPLE_PAY
+      properties:
+        key:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        activeSince:
+          format: date-time
+          type: string
+        activeUntil:
+          format: date-time
+          type: string
+        bank:
+          $ref: '#/components/schemas/Bank'
+        accountAccessWays:
+          items:
+            enum:
+            - BRANCH
+            - ONLINE
+            - PHONE
+            type: string
+          type: array
+          uniqueItems: true
+        branchesNumber:
+          format: int64
+          type: integer
+        bankingAppGrades:
+          $ref: '#/components/schemas/BankingAppGrades'
+        onlineBankingSafetyProcedures:
+          items:
+            enum:
+            - I_TAN
+            - MOBILE_TAN
+            - APP_TAN
+            - FIN_TS
+            - TAN_GENERATOR
+            - SMART_SECURE_APP
+            - CHIP_TAN
+            - PUSH_TAN
+            - PHOTO_TAN
+            - QR_TAN
+            - TAN_BOX
+            type: string
+          type: array
+          uniqueItems: true
+        personalConsultationsServiceAvailable:
+          type: boolean
+        specialFeatures:
+          type: string
+        giroCard:
+          $ref: '#/components/schemas/GiroCard'
+        debitCard:
+          $ref: '#/components/schemas/DebitCard'
+        creditCard:
+          $ref: '#/components/schemas/CreditCard'
+        paymentApps:
+          items:
+            enum:
+            - APPLE_PAY
+            - GOOGLE_PAY
+            type: string
+          type: array
+          uniqueItems: true
+        giroCardCashWithdrawalConditions:
+          $ref: '#/components/schemas/CashWithdrawalConditions'
+        debitCardCashWithdrawalConditions:
+          $ref: '#/components/schemas/CashWithdrawalConditions'
+        creditCardCashWithdrawalConditions:
+          $ref: '#/components/schemas/CashWithdrawalConditions'
+        freeCashWithdrawalAbroad:
+          type: boolean
+        cashWithdrawalByDebitCardInRegion:
+          $ref: '#/components/schemas/CashWithdrawalInRegion'
+        cashWithdrawalByCreditCardInRegion:
+          $ref: '#/components/schemas/CashWithdrawalInRegion'
+        cashWithdrawalInShop:
+          type: boolean
+        cashDepositCondition:
+          enum:
+          - FREE
+          - CONDITIONALLY_FREE
+          - CHARGEABLE
+          type: string
+        otherBankServices:
+          items:
+            enum:
+            - SECURITIES_ACCOUNT
+            - SAVINGS_PLANS
+            - CRYPTO
+            - FOREIGN_CURRENCIES
+            - ASSET_MANAGEMENT
+            type: string
+          type: array
+          uniqueItems: true
+        fees:
+          $ref: '#/components/schemas/Fees'
+        bonus:
+          $ref: '#/components/schemas/Bonus'
+        cashback:
+          $ref: '#/components/schemas/Cashback'
+        creditInterest:
+          format: float
+          type: number
+        depositGuarantee:
+          type: string
+        sustainabilityType:
+          enum:
+          - NO_ACTIVITIES
+          - CLIMATE_POSITIVE
+          - CLIMATE_NEUTRAL
+          - ENVIRONMENTAL_PROJECT
+          type: string
+        docs:
+          items:
+            $ref: '#/components/schemas/Doc'
+          type: array
+      type: object
+    SaveBankRequest:
+      example:
+        types:
+        - REGIONAL
+        - REGIONAL
+        activeForSeo: true
+        logoFileName: logoFileName
+        description: description
+        yearFounded: 6
+        homePage: homePage
+        legalForm: legalForm
+        legalAddress: legalAddress
+        seoName: seoName
+        apiServerId: 0
+        blz: blz
+        phone: phone
+        name: name
+        contactAddress: contactAddress
+        id: id
+        bic: bic
+        email: email
+      properties:
+        id:
+          maxLength: 24
+          minLength: 24
+          type: string
+        apiServerId:
+          format: int64
+          type: integer
+        name:
+          maxLength: 100
+          minLength: 1
+          type: string
+        logoFileName:
+          type: string
+        blz:
+          type: string
+        bic:
+          type: string
+        types:
+          items:
+            enum:
+            - REGIONAL
+            - NATIONAL
+            - DIRECT_BANK
+            - FILIAL_BANK
+            - SMARTPHONE_BANK
+            type: string
+          type: array
+          uniqueItems: true
+        phone:
+          type: string
+        email:
+          type: string
+        homePage:
+          pattern: "https?://[\\w-/.:]+\\w"
+          type: string
+        description:
+          type: string
+        legalAddress:
+          type: string
+        contactAddress:
+          type: string
+        legalForm:
+          type: string
+        yearFounded:
+          format: int32
+          type: integer
+        seoName:
+          type: string
+        activeForSeo:
+          type: boolean
+      required:
+      - name
+      type: object
+    SimpleBankView:
+      example:
+        name: name
+        productsNumber: 0
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        productsNumber:
+          format: int32
+          type: integer
+      type: object
+    SimpleProductView:
+      example:
+        activeSince: 2000-01-23T04:56:07.000+00:00
+        name: name
+        id: id
+        key: key
+        activeUntil: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        name:
+          type: string
+        activeSince:
+          format: date-time
+          type: string
+        activeUntil:
+          format: date-time
+          type: string
+      type: object
+
